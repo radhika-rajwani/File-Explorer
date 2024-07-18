@@ -8,10 +8,10 @@ const FileExplorer = ({ folderData }) => {
 
   return (
     <div className="ml-10 my-3">
-      <div className="">
-        <h2 className="border-l border-black pl-2">
-          {folderData.type === "folder" ? (showChildren ? "📂" : "📁") : "📄"}
+      <div className="bdr">
+        <h2 className=" pl-2">
           <span className="cursor-pointer ml-2" onClick={handleChildrenData}>
+            {folderData.type === "folder" ? (showChildren ? "📂" : "📁") : "📄"}
             {folderData.name}
             {folderData.type === "folder" ? (showChildren ? "🔺" : "🔻") : ""}
           </span>

@@ -10,3 +10,7 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
+.bdr {
+  border-left: 1px dashed Black;
+}
