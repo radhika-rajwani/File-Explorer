@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // Recursive File Explorer Component
-const FileExplorer = ({ folderData, parentPath, onNavigate, isRoot }) => {
+const FileExplorer = ({ folderData, parentPath, onNavigate, isRoot, resetState }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // If we are at the root, ensure folders are collapsed
-  React.useEffect(() => {
-    if (isRoot) {
-      setIsExpanded(false); // Collapse all folders at the root
+  useEffect(() => {
+    if (isRoot || resetState) {
+      setIsExpanded(false); // Collapse all folders at the root or if resetState is triggered
     }
-  }, [isRoot]);
+  }, [isRoot, resetState]);
 
   const handleFolderClick = () => {
     const newIsExpanded = !isExpanded;
@@ -46,6 +46,7 @@ const FileExplorer = ({ folderData, parentPath, onNavigate, isRoot }) => {
             parentPath={parentPath}  // Pass the current parent path, not full path
             onNavigate={onNavigate}
             isRoot={isRoot}  // Pass isRoot flag
+            resetState={resetState}  // Pass resetState flag to child
           />
         ))}
     </div>
@@ -57,11 +58,13 @@ const FileExplorerWithPathBar = ({ folderData }) => {
   const [currentPath, setCurrentPath] = useState("/");
   const [pathHistory, setPathHistory] = useState(["/"]); // Track navigation history
   const [isRoot, setIsRoot] = useState(true); // Track whether we're at the root level
+  const [resetState, setResetState] = useState(false); // Flag to reset all folder states
 
   const navigateToPath = (path) => {
     setCurrentPath(path);
     setPathHistory((prevHistory) => [...prevHistory, path]); // Add to history
     setIsRoot(path === "/"); // Set isRoot to true if we're at the root
+    setResetState(path === "/"); // Trigger resetState if we navigate to root
   };
 
   // Function to clean up and manage the path bar segments
@@ -79,6 +82,7 @@ const FileExplorerWithPathBar = ({ folderData }) => {
     setCurrentPath(newPath); // Update the path
     setPathHistory((prevHistory) => [...prevHistory, newPath]); // Optional: Keep the history updated
     setIsRoot(newPath === "/"); // Set isRoot based on whether we're at the root
+    setResetState(newPath === "/"); // Trigger resetState if we navigate to root
   };
 
   return (
@@ -126,6 +130,7 @@ const FileExplorerWithPathBar = ({ folderData }) => {
           }
         }}
         isRoot={isRoot}  // Pass isRoot flag to FileExplorer to reset expanded state
+        resetState={resetState}  // Pass resetState flag to FileExplorer
       />
     </div>
   );
