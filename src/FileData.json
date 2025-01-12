@@ -1,102 +1,108 @@
 {
-    "name": "File Explorer",
-    "type": "folder",
-    "children": [
-      {
-        "name": "node_modules",
-        "type": "folder",
-        "children": []
-      },
-      {
-        "name": "public",
-        "type": "folder",
-        "children": [
-          {
-            "name": "index.html",
-            "type": "file"
-          },
-          {
-            "name": "favicon.ico",
-            "type": "file"
-          },
-          {
-            "name": "manifest.json",
-            "type": "file"
-          },
-          {
-            "name": "robots.txt",
-            "type": "file"
-          }
-        ]
-      },
-      {
-        "name": "src",
-        "type": "folder",
-        "children": [
-          {
-            "name": "Components",
-            "type": "folder",
-            "children": [
-              {
-                "name": "Header.js",
-                "type": "file"
-              },
-              {
-                "name": "Footer.js",
-                "type": "file"
-              },
-              {
-                "name": "App.js",
-                "type": "file"
-              }
-            ]
-          },
-          {
-            "name": "App.css",
-            "type": "file"
-          },
-          {
-            "name": "App.test.js",
-            "type": "file"
-          },
-          {
-            "name": "index.css",
-            "type": "file"
-          },
-          {
-            "name": "index.js",
-            "type": "file"
-          },
-          {
-            "name": "logo.svg",
-            "type": "file"
-          },
-          {
-            "name": "reportWebVitals.js",
-            "type": "file"
-          },
-          {
-            "name": "setupTests.js",
-            "type": "file"
-          }
-        ]
-      },
-      {
-        "name": ".gitignore",
-        "type": "file"
-      },
-      {
-        "name": "package.json",
-        "type": "file"
-      },
-      {
-        "name": "package-lock.json",
-        "type": "file"
-      },
-      {
-        "name": "README.md",
-        "type": "file"
-      }
-    ]
-  }
-  
+  "name": "/",
+  "type": "folder",
+  "children": [
+    {
+      "name": "home",
+      "type": "folder",
+      "children": []
+    },
+    {
+      "name": "etc",
+      "type": "folder",
+      "children": []
+    },
+    {
+      "name": "opt",
+      "type": "folder",
+      "children": []
+    },
+    {
+      "name": "boot",
+      "type": "folder",
+      "children": []
+    },
+    {
+      "name": "bin",
+      "type": "folder",
+      "children": []
+    },
+    {
+      "name": "lib",
+      "type": "folder",
+      "children": []
+    },
+    {
+      "name": "sbin",
+      "type": "folder",
+      "children": []
+    },
+    {
+      "name": "usr",
+      "type": "folder",
+      "children": [
+        {
+          "name": "bin",
+          "type": "folder",
+          "children": []
+        },
+        {
+          "name": "local",
+          "type": "folder",
+          "children": []
+        },
+        {
+          "name": "sbin",
+          "type": "folder",
+          "children": []
+        },
+        {
+          "name": "include",
+          "type": "folder",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "var",
+      "type": "folder",
+      "children": [
+        {
+          "name": "tmp",
+          "type": "folder",
+          "children": []
+        },
+        {
+          "name": "log",
+          "type": "folder",
+          "children": []
+        },
+        {
+          "name": "cache",
+          "type": "folder",
+          "children": []
+        },
+        {
+          "name": "spool",
+          "type": "folder",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "mnt",
+      "type": "folder",
+      "children": []
+    },
+    {
+      "name": "media",
+      "type": "folder",
+      "children": []
+    },
+    {
+      "name": "tmp",
+      "type": "folder",
+      "children": []
+    }
+  ]
+}

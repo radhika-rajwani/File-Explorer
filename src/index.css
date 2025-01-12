@@ -14,3 +14,34 @@
 .bdr {
   border-left: 1px dashed Black;
 }
+
+.path-bar {
+  background-color: #f1f1f1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.path-bar button {
+  background: none;
+  border: none;
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.go-back {
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text color */
+  padding: 10px 20px; /* Padding inside the button */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 16px; /* Font size */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.go-back:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
