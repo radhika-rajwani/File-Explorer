@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-
-// Recursive File Explorer Component
+import ActionButtons from "./ActionButtons";
+import FileData from "../FileData.json"
 const FileExplorer = ({ folderData, parentPath, onNavigate, isRoot, resetState }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // If we are at the root, ensure folders are collapsed
   useEffect(() => {
     if (isRoot || resetState) {
       setIsExpanded(false); // Collapse all folders at the root or if resetState is triggered
@@ -15,7 +14,6 @@ const FileExplorer = ({ folderData, parentPath, onNavigate, isRoot, resetState }
     const newIsExpanded = !isExpanded;
     setIsExpanded(newIsExpanded);
 
-    // When expanding a folder, append the folder name to the current path
     const newPath = `${parentPath}/${folderData.name}`.replace(/\/+/g, "/"); // Prevent double slashes
     onNavigate(newPath);
   };
@@ -26,68 +24,120 @@ const FileExplorer = ({ folderData, parentPath, onNavigate, isRoot, resetState }
         <span className="cursor-pointer" onClick={handleFolderClick}>
           {folderData.type === "folder" ? (
             isExpanded ? (
-              <span>📂 🔺</span> // Down arrow when expanded
+              <span>📂 🔺</span>
             ) : (
-              <span>📁 🔻</span> // Right arrow when collapsed
+              <span>📁 🔻</span>
             )
           ) : (
-            <span>📄</span> // For files, just display file icon
+            <span>📄</span>
           )}
           {folderData.name}
         </span>
       </div>
 
-      {/* Render child folders or files */}
       {isExpanded &&
         folderData.children?.map((child, index) => (
           <FileExplorer
             key={index}
             folderData={child}
-            parentPath={parentPath}  // Pass the current parent path, not full path
+            parentPath={parentPath}
             onNavigate={onNavigate}
-            isRoot={isRoot}  // Pass isRoot flag
-            resetState={resetState}  // Pass resetState flag to child
+            isRoot={false}
+            resetState={false}
           />
         ))}
     </div>
   );
 };
 
-// Main File Explorer with Path Bar Component
-const FileExplorerWithPathBar = ({ folderData }) => {
+const FileExplorerWithPathBar = () => {
+  const [folderData, setFolderData] = useState(FileData); // Initialize with JSON data
   const [currentPath, setCurrentPath] = useState("/");
-  const [pathHistory, setPathHistory] = useState(["/"]); // Track navigation history
-  const [isRoot, setIsRoot] = useState(true); // Track whether we're at the root level
-  const [resetState, setResetState] = useState(false); // Flag to reset all folder states
+  const [isRoot, setIsRoot] = useState(true);
+  const [resetState, setResetState] = useState(false);
 
   const navigateToPath = (path) => {
-    setCurrentPath(path);
-    setPathHistory((prevHistory) => [...prevHistory, path]); // Add to history
-    setIsRoot(path === "/"); // Set isRoot to true if we're at the root
-    setResetState(path === "/"); // Trigger resetState if we navigate to root
+    const cleanedPath = path.replace(/\/+/g, "/");
+    setCurrentPath(cleanedPath);
+    setIsRoot(cleanedPath === "/");
+    setResetState(cleanedPath === "/");
   };
 
-  // Function to clean up and manage the path bar segments
   const getPathSegments = () => {
-    const segments = currentPath.split("/").filter(Boolean); // Splitting and removing empty segments
-    return segments;
+    return currentPath.split("/").filter(Boolean);
   };
 
   const handleBackNavigation = () => {
-    // Split the path into segments, remove the last one, and join them back into a string
     const segments = currentPath.split("/").filter(Boolean);
-    segments.pop(); // Remove the last segment
-    const newPath = segments.length > 0 ? `/${segments.join("/")}` : "/"; // Rebuild the path
+    segments.pop();
+    const newPath = segments.length > 0 ? `/${segments.join("/")}` : "/";
+    navigateToPath(newPath);
+  };
 
-    setCurrentPath(newPath); // Update the path
-    setPathHistory((prevHistory) => [...prevHistory, newPath]); // Optional: Keep the history updated
-    setIsRoot(newPath === "/"); // Set isRoot based on whether we're at the root
-    setResetState(newPath === "/"); // Trigger resetState if we navigate to root
+  const findTarget = (path, data) => {
+    const segments = path.split("/").filter(Boolean); // Split path into segments
+    let current = { children: data }; // Start from the root
+
+    for (const segment of segments) {
+      current = current.children?.find((item) => item.name === segment);
+      if (!current) return null; // If no match is found, return null
+    }
+    return current;
+  };
+
+  const onCreateFile = (name) => {
+    const target = findTarget(currentPath, folderData.children);
+    if (target && target.type === "folder") {
+      target.children.push({ name, type: "file", children: [] }); // Add file to target folder
+      setFolderData({ ...folderData }); // Trigger re-render
+    } else {
+      console.error("Invalid target: Cannot create file here.");
+    }
+  };
+
+  const onCreateFolder = (name) => {
+    const target = findTarget(currentPath, folderData.children);
+    if (target && target.type === "folder") {
+      target.children.push({ name, type: "folder", children: [] }); // Add folder to target folder
+      setFolderData({ ...folderData }); // Trigger re-render
+    } else {
+      console.error("Invalid target: Cannot create folder here.");
+    }
+  };
+
+  const onDelete = (name) => {
+    const target = findTarget(currentPath, folderData.children);
+    if (target) {
+      target.children = target.children.filter((child) => child.name !== name); // Remove item
+      setFolderData({ ...folderData }); // Trigger re-render
+    } else {
+      console.error("Invalid target: Cannot delete.");
+    }
+  };
+
+  const onRename = (oldName, newName) => {
+    const target = findTarget(currentPath, folderData.children);
+    if (target) {
+      const item = target.children.find((child) => child.name === oldName);
+      if (item) {
+        item.name = newName; // Rename item
+        setFolderData({ ...folderData }); // Trigger re-render
+      } else {
+        console.error("Item not found for renaming.");
+      }
+    } else {
+      console.error("Invalid target: Cannot rename.");
+    }
   };
 
   return (
     <div>
-      {/* Path Bar */}
+      <ActionButtons
+        onCreateFile={onCreateFile}
+        onCreateFolder={onCreateFolder}
+        onDelete={() => console.log("Delete")} // Replace with logic to get the selected file/folder
+        onRename={(newName) => console.log(`Rename to: ${newName}`)} // Replace with logic for renaming
+      />
       <div className="path-bar bg-gray-200 p-2 flex items-center space-x-2">
         <button
           className="go-back cursor-pointer text-blue-500"
@@ -95,17 +145,14 @@ const FileExplorerWithPathBar = ({ folderData }) => {
         >
           Go Back
         </button>
-
         <button
           className="cursor-pointer text-blue-500"
           onClick={() => navigateToPath("/")}
         >
           /
         </button>
-
         {getPathSegments().map((segment, index) => {
-          const segmentPath = `/${getPathSegments().slice(0, index + 1).join("/")}`; // Relative path for each segment
-
+          const segmentPath = `/${getPathSegments().slice(0, index + 1).join("/")}`;
           return (
             <span key={index}>
               {" / "}
@@ -119,18 +166,16 @@ const FileExplorerWithPathBar = ({ folderData }) => {
           );
         })}
       </div>
-
-      {/* File Explorer */}
       <FileExplorer
         folderData={folderData}
-        parentPath={currentPath} // Pass the current path as parentPath, not full path
+        parentPath={currentPath}
         onNavigate={(newPath) => {
           if (currentPath !== newPath) {
-            setCurrentPath(newPath); // Update path only when changed
+            setCurrentPath(newPath);
           }
         }}
-        isRoot={isRoot}  // Pass isRoot flag to FileExplorer to reset expanded state
-        resetState={resetState}  // Pass resetState flag to FileExplorer
+        isRoot={isRoot}
+        resetState={resetState}
       />
     </div>
   );

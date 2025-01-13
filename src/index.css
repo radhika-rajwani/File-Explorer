@@ -32,16 +32,67 @@
 }
 
 .go-back {
-  background-color: #4CAF50; /* Green background */
-  color: white; /* White text color */
-  padding: 10px 20px; /* Padding inside the button */
-  border: none; /* No border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  font-size: 16px; /* Font size */
-  transition: background-color 0.3s ease; /* Smooth transition on hover */
+  background-color: #4CAF50; 
+  color: white; 
+  padding: 10px 20px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+  font-size: 16px; 
+  transition: background-color 0.3s ease; 
 }
 
 .go-back:hover {
-  background-color: #45a049; /* Darker green on hover */
+  background-color: #45a049;
+  color: white;
 }
+.create-button {
+  background-color: #4CAF50; 
+  color: white; 
+  padding: 10px 20px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+  font-size: 16px; 
+  transition: background-color 0.3s ease;
+}
+.button-container {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.input-field {
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.modal-actions button {
+  margin: 5px;
+}
+
